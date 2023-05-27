@@ -3,9 +3,12 @@ import {
   type AuctionListing,
   type Marketplace,
   MediaRenderer,
+  useNetworkMismatch,
+  useAddress,
 } from "@thirdweb-dev/react";
 import React from "react";
 import { BigNumber } from "ethers";
+import { toast } from "react-hot-toast";
 
 type NftsProps = {
   item: DirectListing | AuctionListing;
@@ -13,8 +16,22 @@ type NftsProps = {
 };
 
 const Card = ({ contract, item }: NftsProps) => {
+  const isWorngNetwork = useNetworkMismatch();
+
+  const address = useAddress();
+
+  const handleBuyout = async () => {
+    try {
+      if (!address) return toast.error("Please connect your wallet");
+      if (isWorngNetwork) return toast.error("Please switch to mumbai network");
+      await contract?.buyoutListing(BigNumber.from(item.id), 1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div className="border-2 border-slate-300 rounded-lg  p-4 " key={item.id}>
+    <div className="border-2 border-slate-300 rounded-lg  p-4 ">
       <MediaRenderer
         src={item?.asset.image}
         width="75"
@@ -35,13 +52,7 @@ const Card = ({ contract, item }: NftsProps) => {
             {item.buyoutCurrencyValuePerToken.displayValue} MATIC
           </p>
           <button
-            onClick={async () => {
-              try {
-                await contract?.buyoutListing(BigNumber.from(item.id), 1);
-              } catch (error) {
-                console.log(error);
-              }
-            }}
+            onClick={() => handleBuyout()}
             className="bg-slate-300 text-brand-primary rounded-lg w-full h-11  font-medium   tracking-wider hover:bg-slate-100"
           >
             Buy
