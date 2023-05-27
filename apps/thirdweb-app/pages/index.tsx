@@ -1,5 +1,6 @@
 import { useContract } from "@thirdweb-dev/react";
 import type { NextPage } from "next";
+import { Header } from "../components/header";
 
 const Home: NextPage = () => {
   const { contract } = useContract(
@@ -8,8 +9,8 @@ const Home: NextPage = () => {
 
   console.log(contract);
   return (
-    <div className="bg-brand-primary h-screen w-screen flex text-brand-optional  flex-row items-center  text-xl font-bold text-center justify-center">
-      Thirdweb
+    <div className="bg-brand-primary  h-full px-32 items-center">
+      <Header />
     </div>
   );
 };
