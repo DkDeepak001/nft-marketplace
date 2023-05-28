@@ -11,6 +11,7 @@ const CardSkeleton = () => {
               animationDelay: delay,
               animationFillMode: "backwards",
             }}
+            key={index}
           >
             <div className="rounded-lg h-96 w-96 bg-white/50 animate-pulse" />
             <div className="pt-5 flex flex-row justify-between items-center ">
