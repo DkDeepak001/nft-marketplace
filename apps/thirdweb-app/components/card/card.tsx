@@ -66,7 +66,7 @@ const Card = ({ id, item }: NftsProps) => {
         </div>
         <div className="w-2/5 flex flex-col">
           {isLoading ? (
-            <p className="text-white"> loading....</p>
+            <p className="bg-white/50 animate-pulse w-36 rounded-lg h-10"> </p>
           ) : isListing && isListing[0] ? (
             <>
               <p className="text-white mb-2 text-center">
