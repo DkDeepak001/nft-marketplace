@@ -11,6 +11,7 @@ import { BigNumber } from "ethers";
 import { toast } from "react-hot-toast";
 import { COLLECTION_ADDRESS, MARKET_PLACE_ADDRESS } from "../../pages/address";
 import Image from "next/image";
+import Link from "next/link";
 
 type NftsProps = {
   item: NFT;
@@ -31,10 +32,19 @@ const Card = ({ id, item }: NftsProps) => {
     try {
       if (!address) return toast.error("Please connect your wallet");
       if (isWorngNetwork) return toast.error("Please switch to mumbai network");
-      await contract?.buyoutListing(BigNumber.from(item.metadata.id), 1);
+      toast.promise(buyout(), {
+        loading: `# ${item.metadata.id} Buying ...`,
+        success: <b>#{item.metadata.id} NFT's added your wallet</b>,
+        error: <b>#{item.metadata.id} failed to buy</b>,
+      });
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const buyout = async () => {
+    if (!isListing) return toast.error("this item is not listed");
+    await contract?.buyoutListing(BigNumber.from(isListing[0].id), 1);
   };
 
   return (
@@ -71,7 +81,10 @@ const Card = ({ id, item }: NftsProps) => {
             </>
           ) : (
             <>
-              <div className="flex flex-row items-center justify-start gap-x-2">
+              <Link
+                className="flex flex-row items-center justify-start gap-x-2"
+                href={`/ownable/${item.owner}`}
+              >
                 <Image
                   src={`https://api.dicebear.com/6.x/bottts-neutral/png?seed=${item.owner}`}
                   width="100"
@@ -81,7 +94,7 @@ const Card = ({ id, item }: NftsProps) => {
                 />
 
                 <p className="text-white ">{item.owner.slice(0, 8)}...</p>
-              </div>
+              </Link>
             </>
           )}
         </div>
