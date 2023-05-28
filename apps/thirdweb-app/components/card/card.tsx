@@ -9,7 +9,7 @@ import {
 import React from "react";
 import { BigNumber } from "ethers";
 import { toast } from "react-hot-toast";
-import { COLLECTION_ADDRESS, MARKET_PLACE_ADDRESS } from "../../pages/address";
+import { COLLECTION_ADDRESS, MARKET_PLACE_ADDRESS } from "../../const/address";
 import Image from "next/image";
 import Link from "next/link";
 

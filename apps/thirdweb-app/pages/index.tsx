@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import Header from "../components/header";
 import CardSkeleton from "../components/skeleton/card";
 import Card from "../components/card/card";
-import { COLLECTION_ADDRESS, MARKET_PLACE_ADDRESS } from "./address";
+import { COLLECTION_ADDRESS, MARKET_PLACE_ADDRESS } from "../const/address";
 
 const Home: NextPage = () => {
   const { contract } = useContract(COLLECTION_ADDRESS);

@@ -10,7 +10,7 @@ import {
   useOwnedNFTs,
 } from "@thirdweb-dev/react";
 import Header from "../../components/header";
-import { COLLECTION_ADDRESS, MARKET_PLACE_ADDRESS } from "../address";
+import { COLLECTION_ADDRESS, MARKET_PLACE_ADDRESS } from "../../const/address";
 import { useCallback, useState } from "react";
 import { NATIVE_TOKEN_ADDRESS, NFT } from "@thirdweb-dev/sdk";
 import { toast } from "react-hot-toast";
