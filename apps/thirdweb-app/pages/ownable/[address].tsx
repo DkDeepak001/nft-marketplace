@@ -1,3 +1,4 @@
+"use client";
 import { NextPage } from "next";
 import {
   MediaRenderer,
@@ -8,13 +9,23 @@ import {
   useCreateDirectListing,
   useOwnedNFTs,
 } from "@thirdweb-dev/react";
-import Header from "../components/header";
-import { COLLECTION_ADDRESS, MARKET_PLACE_ADDRESS } from "./address";
+import Header from "../../components/header";
+import { COLLECTION_ADDRESS, MARKET_PLACE_ADDRESS } from "../address";
 import { useCallback, useState } from "react";
 import { NATIVE_TOKEN_ADDRESS, NFT } from "@thirdweb-dev/sdk";
 import { toast } from "react-hot-toast";
+import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
+import Image from "next/image";
 
-const myNfts: NextPage = () => {
+const Profile: NextPage = () => {
+  const router = useRouter();
+  const { address } = router.query as { address: string };
+
+  if (!address) {
+    toast.error("Invalid address");
+    router.push("/");
+  }
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [seletecNft, setSelectedNft] = useState<NFT | undefined>();
   const [price, setPrice] = useState<number>(); // [price, setPrice
@@ -24,8 +35,7 @@ const myNfts: NextPage = () => {
     "marketplace"
   );
 
-  const address = useAddress();
-
+  const walletAddress = useAddress();
   const {
     data: nfts,
     isLoading,
@@ -55,6 +65,7 @@ const myNfts: NextPage = () => {
   const handleCreateAuction = async () => {
     if (!seletecNft) return toast.error("Please select a NFT");
     if (!price) return toast.error("Please enter a price");
+    setShowPopup(false);
     try {
       toast.promise(
         createDirectListing({
@@ -105,8 +116,25 @@ const myNfts: NextPage = () => {
       <Header />
       <div className="border-b-2 border-slate-300/25  w-full mb-10 mt-3" />
       <div className="flex flex-col flex-wrap gap-8 items-center pb-16  ">
+        <div className="flex flex-row items-center gap-x-2">
+          <Image
+            src={`https://api.dicebear.com/6.x/bottts-neutral/png?seed=${address}`}
+            width="100"
+            height="100"
+            className="rounded-full h-8 w-8"
+            alt="avatar"
+          />
+
+          <p className="text-slate-300 flex felx-row items-center gap-x-2">
+            {address} has{"  "}Owned
+            <p className="text-white font-extralight text-xl">
+              {"  "}
+              {nfts?.length} NFT's
+            </p>
+          </p>
+        </div>
         {isLoading || myListingLoading ? (
-          <div className="text-white text-xl">loading...</div>
+          <div className="text-white text-xl">loading nfts of {address}...</div>
         ) : nfts?.length === 0 ? (
           <h1 className="text-white text-3xl">You don't have any NFT's yet</h1>
         ) : (
@@ -131,19 +159,19 @@ const myNfts: NextPage = () => {
                 {item.quantityOwned || 1} nft
               </h2>
 
-              <button
-                onClick={() => {
-                  hasListed(item.metadata.id)
-                    ? handleCancelAuction(item.metadata.id)
-                    : () => {
-                        setSelectedNft(item);
-                        setShowPopup(true);
-                      };
-                }}
-                className="bg-white text-brand-primary rounded-lg w-1/4 h-11 font-medium tracking-wider "
-              >
-                {hasListed(item.metadata.id) ? `Cancel` : `List`}
-              </button>
+              {walletAddress === address && (
+                <button
+                  onClick={() => {
+                    hasListed(item.metadata.id)
+                      ? handleCancelAuction(item.metadata.id)
+                      : setSelectedNft(item);
+                    setShowPopup(true);
+                  }}
+                  className="bg-white text-brand-primary rounded-lg w-1/4 h-11 font-medium tracking-wider "
+                >
+                  {hasListed(item.metadata.id) ? `Cancel` : `List`}
+                </button>
+              )}
             </div>
           ))
         )}
@@ -182,4 +210,4 @@ const myNfts: NextPage = () => {
   );
 };
 
-export default myNfts;
+export default dynamic(() => Promise.resolve(Profile), { ssr: false });
