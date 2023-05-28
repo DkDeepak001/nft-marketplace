@@ -10,7 +10,7 @@ const Home: NextPage = () => {
   const { data: nfts, isLoading } = useNFTs(contract);
 
   return (
-    <div className="bg-brand-primary  max-h-full min-h-screen  px-32 items-center">
+    <div className="bg-brand-primary  max-h-full min-h-screen  lg:px-28 items-center sm:px-5">
       <Header />
       <div className="border-b-2 border-slate-300/25  w-full mb-10 mt-3" />
       <div className="flex flex-row flex-wrap gap-8 justify-center pb-16">

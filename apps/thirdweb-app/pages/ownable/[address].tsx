@@ -112,7 +112,7 @@ const Profile: NextPage = () => {
   );
 
   return (
-    <div className="bg-brand-primary  max-h-full min-h-screen  px-32 items-center ">
+    <div className="bg-brand-primary  max-h-full min-h-screen  px-32 items-center lg:px-28 sm:px-5">
       <Header />
       <div className="border-b-2 border-slate-300/25  w-full mb-10 mt-3" />
       <div className="flex flex-col flex-wrap gap-8 items-center pb-16  ">
@@ -140,7 +140,7 @@ const Profile: NextPage = () => {
         ) : (
           nfts?.map((item) => (
             <div
-              className="border-[1px] border-slate-300/50 rounded-lg p-4 w-2/5 flex flex-row items-center gap-x-10 justify-between"
+              className="border-[1px] border-slate-300/50 rounded-lg p-4 lg:w-2/5 sm:w-3/4 flex flex-row items-center gap-x-10 justify-between"
               key={item.metadata.id}
             >
               <MediaRenderer
