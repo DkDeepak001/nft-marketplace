@@ -161,12 +161,14 @@ const Profile: NextPage = () => {
 
               {walletAddress === address && (
                 <button
-                  onClick={() => {
+                  onClick={
                     hasListed(item.metadata.id)
-                      ? handleCancelAuction(item.metadata.id)
-                      : setSelectedNft(item);
-                    setShowPopup(true);
-                  }}
+                      ? () => handleCancelAuction(item.metadata.id)
+                      : () => {
+                          setSelectedNft(item);
+                          setShowPopup(true);
+                        }
+                  }
                   className="bg-white text-brand-primary rounded-lg w-1/4 h-11 font-medium tracking-wider "
                 >
                   {hasListed(item.metadata.id) ? `Cancel` : `List`}
